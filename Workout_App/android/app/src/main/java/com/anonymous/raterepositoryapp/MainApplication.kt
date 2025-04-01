@@ -15,6 +15,8 @@ import com.facebook.soloader.SoLoader
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
+import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksPackage
+import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksFrameProcessorPluginPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -25,6 +27,8 @@ class MainApplication : Application(), ReactApplication {
             val packages = PackageList(this).packages
             // Packages that cannot be autolinked yet can be added manually here, for example:
             // packages.add(new MyReactNativePackage());
+            packages.add(PoseLandmarksFrameProcessorPluginPackage())
+            packages.add(PoseLandmarksPackage())
             return packages
           }
 
