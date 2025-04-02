@@ -7,7 +7,7 @@ import { StyleSheet } from "react-native"
 // Pose Landmarks
 
 const {PoseLandmarks} = NativeModules
-const PoseLandmarksEmitter = new NativeEventEmitter(HandLandmarks);
+const PoseLandmarksEmitter = new NativeEventEmitter(PoseLandmarks);
 
 // intialize the frame processor plugin poseLandmakrs.
 const poseLandMarkPlugin = VisionCameraProxy.initFrameProcessorPlugin('poseLandmarks', {});
@@ -38,7 +38,7 @@ const RecordingPage = () =>{
     useEffect(() => {
         // Set up the event listener to listen for hand landmarks detection results
         const subscription = PoseLandmarksEmitter.addListener(
-        'onHandLandmarksDetected',
+        'onPoseLandmarksDetected',
         event => {
           // Update the landmarks shared value to paint them on the screen
           landmarks.value = event.landmarks;
@@ -135,9 +135,19 @@ const RecordingPage = () =>{
         return <Text>No device</Text>;
     } 
 
+    const pixelFormat = Platform.OS === 'ios' ? 'rgb' : 'yuv';
+
     return (
     <>
-        <Camera style={styles.display} ref={cameraRef} device={device} video={true} isActive={true} />
+        <Camera 
+            style={styles.display} 
+            ref={cameraRef}
+            device={device} 
+            video={true} 
+            isActive={true}  
+            frameProcessor={frameProcessor}
+            pixelFormat={pixelFormat}
+        />
         <View style = {styles.recordButton}>
             <Button
                 

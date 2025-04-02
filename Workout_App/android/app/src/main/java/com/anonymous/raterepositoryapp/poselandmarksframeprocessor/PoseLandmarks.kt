@@ -70,7 +70,7 @@ class PoseLandmarks(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
             var poseName = ""
 
-            for(pose in result.hand) {
+            for(pose in result.pose) {
                 for(poseProps in pose){
                     poseName = poseProps.categoryName()
                 }
