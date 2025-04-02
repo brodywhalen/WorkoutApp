@@ -18,16 +18,16 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
 
-// copied in from chat gpt
-import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksPackage
-import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksFrameProcessorPluginPackage
+// // copied in from chat gpt
+// import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksPackage
+// import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarksFrameProcessorPluginPackage
 
 import com.mrousavy.camera.frameprocessors.Frame
 
 class PoseLandmarks(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     override fun getName(): String {
-        return "PoseLandmarks" // The name used to access the module from JavaScript
+        return "poseLandmarks" // The name used to access the module from JavaScript
     }
 
     private fun sendEvent(eventName: String, params: WritableMap?) {
@@ -68,17 +68,24 @@ class PoseLandmarks(reactContext: ReactApplicationContext) : ReactContextBaseJav
                 landmarksArray.pushArray(poseMap)
             }
 
-            var poseName = ""
+            var poseName = "";
+        // ERROR POSE NOT ABLE TO BE ACCESED
+            // for(pose in result.pose) {
+            //     for(poseProps in pose){
+            //         poseName = poseProps.categoryName()
+            //     }
+            // }
 
-            for(pose in result.pose) {
-                for(poseProps in pose){
-                    poseName = poseProps.categoryName()
-                }
-            }
+            //       for(hand in result.handedness()) {
+            //     for(handProps in hand){
+            //         handName = handProps.categoryName()
+            //     }
+            // }
+
 
             val params = Arguments.createMap()
             params.putArray("landmarks", landmarksArray)
-            params.putString("pose", poseName)
+            // params.putString("pose", poseName) see if this will work?
             // Send the landmarks data back to JavaScript
             sendEvent("onPoseLandmarksDetected", params)
         }

@@ -1,19 +1,19 @@
-import { useEffect, useRef, useState, NativeModules } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useCameraDevice, useCameraPermission } from "react-native-vision-camera"
 import { Camera, useSkiaFrameProcessor,VisionCameraProxy } from "react-native-vision-camera"
-import { Button, NativeEventEmitter, Text, View } from "react-native"
+import { Button, NativeEventEmitter, Text, View, NativeModules } from "react-native"
 import { StyleSheet } from "react-native"
 
 // Pose Landmarks
 
-const {PoseLandmarks} = NativeModules
-const PoseLandmarksEmitter = new NativeEventEmitter(PoseLandmarks);
+const {poseLandmarks} = NativeModules
+const PoseLandmarksEmitter = new NativeEventEmitter(poseLandmarks);
 
 // intialize the frame processor plugin poseLandmakrs.
 const poseLandMarkPlugin = VisionCameraProxy.initFrameProcessorPlugin('poseLandmarks', {});
 
 // create a worlet function
-function poseLandmarks (frame){
+function poseLandmarks2 (frame){
     'worklet';
     if(poseLandMarkPlugin == null){
         throw new error ('Failed to load Frame Processor Plugin!');
@@ -97,7 +97,7 @@ const RecordingPage = () =>{
 
 
     },[])
-    poseLandmarks(frame)
+    poseLandmarks2(frame)
 
     const startRecord = async () => {
         if(cameraRef.current) {

@@ -6,7 +6,7 @@ import com.mrousavy.camera.frameprocessors.Frame
 import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin
 import com.mrousavy.camera.frameprocessors.VisionCameraProxy
 import android.util.Log
-import com.anonymous.raterepositoryapp.poselandmarksframeprocessor.PoseLandmarkerHolder
+import com.myproject.PoseLandmarkerHolder // edit
 // Workout_App\android\app\src\main\java\com\anonymous\raterepositoryapp\poselandmarksframeprocessor\PoseLandmarkerHolder.kt
 
 class PoseLandmarksFrameProcessorPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?): FrameProcessorPlugin() {
