@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { useCameraDevice, useCameraPermission } from "react-native-vision-camera"
-import { Camera, useSkiaFrameProcessor,VisionCameraProxy } from "react-native-vision-camera"
-import { Button, NativeEventEmitter, Text, View, NativeModules } from "react-native"
+import { Camera, useSkiaFrameProcessor } from "react-native-vision-camera"
+import { VisionCameraProxy } from 'react-native-vision-camera';
+import { Button, NativeEventEmitter, Text, View, NativeModules, Platform } from "react-native"
 import { StyleSheet } from "react-native"
+// import { useSharedValue } from "react-native-worklets-core"
+import { useSharedValue } from "react-native-reanimated";
 
 // Pose Landmarks
 
@@ -10,13 +13,15 @@ const {poseLandmarks} = NativeModules
 const PoseLandmarksEmitter = new NativeEventEmitter(poseLandmarks);
 
 // intialize the frame processor plugin poseLandmakrs.
-const poseLandMarkPlugin = VisionCameraProxy.initFrameProcessorPlugin('poseLandmarks', {});
+const poseLandMarkPlugin = VisionCameraProxy.initFrameProcessorPlugin('poseLandmarks', {},);
 
 // create a worlet function
+
+
 function poseLandmarks2 (frame){
     'worklet';
     if(poseLandMarkPlugin == null){
-        throw new error ('Failed to load Frame Processor Plugin!');
+        throw new Error('Failed to load Frame Processor Plugin!');
     }
     return poseLandMarkPlugin.call(frame)
 }
@@ -42,57 +47,58 @@ const RecordingPage = () =>{
         event => {
           // Update the landmarks shared value to paint them on the screen
           landmarks.value = event.landmarks;
-  
-          /*
+            /*
             The event contains values for landmarks and hand.
             These values are defined in the HandLandmarkerResultProcessor class
             found in the HandLandmarks.swift file.
           */
           console.log("onHandLandmarksDetected: ", event);
-  
-          /*
+            /*
             This is where you can handle converting the data into commands
             for further processing.
 
 
           */
         },);
+
          return () => {
             subscription.remove()
          }
 
-    }, [])
-
+    }, []);
+    console.log('before processor')
     // Camera Logic
     const frameProcessor = useSkiaFrameProcessor(frame => {
         'worklet';
         frame.render()
-        
+        console.log('we skia here')
         if (landmarks.value[0]) {
             const hand = landmarks.value[0];
             const frameWidth = frame.width;
             const frameHeight = frame.height;
+
+            // console.log()
       
-            // Draw lines connecting landmarks
-            for (const [from, to] of lines) {
-              frame.drawLine(
-                hand[from].x * Number(frameWidth),
-                hand[from].y * Number(frameHeight),
-                hand[to].x * Number(frameWidth),
-                hand[to].y * Number(frameHeight),
-                linePaint,
-              );
-            }
+        //     // Draw lines connecting landmarks
+        //     for (const [from, to] of lines) {
+        //       frame.drawLine(
+        //         hand[from].x * Number(frameWidth),
+        //         hand[from].y * Number(frameHeight),
+        //         hand[to].x * Number(frameWidth),
+        //         hand[to].y * Number(frameHeight),
+        //         linePaint,
+        //       );
+        //     }
       
-            // Draw circles on landmarks
-            for (const mark of hand) {
-              frame.drawCircle(
-                mark.x * Number(frameWidth),
-                mark.y * Number(frameHeight),
-                6,
-                paint,
-              );
-            }
+        //     // Draw circles on landmarks
+        //     for (const mark of hand) {
+        //       frame.drawCircle(
+        //         mark.x * Number(frameWidth),
+        //         mark.y * Number(frameHeight),
+        //         6,
+        //         paint,
+        //       );
+        //     }
           }
 
 
