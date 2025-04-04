@@ -6,6 +6,8 @@ import { Button, NativeEventEmitter, Text, View, NativeModules, Platform } from 
 import { StyleSheet } from "react-native"
 // import { useSharedValue } from "react-native-worklets-core"
 import { useSharedValue } from "react-native-reanimated";
+import { SafeAreaView } from "react-native";
+
 
 // Pose Landmarks
 
@@ -31,14 +33,17 @@ const RecordingPage = () =>{
 
      const landmarks = useSharedValue({})
 
-    const device = useCameraDevice('front');
+    const device = useCameraDevice('back');
     const {hasPermission, requestPermission} = useCameraPermission();
     const cameraRef = useRef(null)
     const [isRecording, setIsRecording] = useState(false)
+    const [hasInitialized, setHasInitialized] = useState(false);
+    const [isActive, setIsActive] = useState(false)
 
     useEffect(()=> {
         console.log('UseEffect 1')
         requestPermission()
+        console.log(device)
     }, [requestPermission])
 
     useEffect(() => {
@@ -73,12 +78,13 @@ const RecordingPage = () =>{
     // Camera Logic
     const frameProcessor = useSkiaFrameProcessor((frame) => {
         'worklet';
-        frame.render()
+        
 
         poseLandmarks2(frame)
-
-        console.log('we skia here')
+        frame.render()
+        // console.log('we skia here')
         if (landmarks.value[0]) {
+            console.log(landmarks.value[0])
             const hand = landmarks.value[0];
             const frameWidth = frame.width;
             const frameHeight = frame.height;
@@ -150,7 +156,8 @@ const RecordingPage = () =>{
     const pixelFormat = Platform.OS === 'ios' ? 'rgb' : 'yuv';
 
     return (
-    <>
+    <>  
+    <SafeAreaView style={StyleSheet.absoluteFill}>
         <Camera 
             style={styles.display} 
             ref={cameraRef}
@@ -159,7 +166,14 @@ const RecordingPage = () =>{
             isActive={true}  
             frameProcessor={frameProcessor}
             pixelFormat={pixelFormat}
+            onInitialized={() => {
+                setHasInitialized(true)
+                if(hasInitialized){
+                    time = setTimeout(()=> setIsActive(true), 150)
+                }
+            }}
         />
+    </SafeAreaView>
         <View style = {styles.recordButton}>
             <Button
                 
@@ -180,7 +194,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     display: {
-        ...StyleSheet.absoluteFillObject
+        ...StyleSheet.absoluteFill
     },
     view: {
         ...StyleSheet.absoluteFillObject,
