@@ -94,7 +94,7 @@ class PoseLandmarks(reactContext: ReactApplicationContext) : ReactContextBaseJav
         try {
             val context: Context = reactApplicationContext
             val baseOptions = BaseOptions.builder()
-                    .setModelAssetPath("pose_landmarker.task")
+                    .setModelAssetPath("pose_landmarker_lite.task")
                     .build()
 
             val poseLandmarkerOptions = PoseLandmarker.PoseLandmarkerOptions.builder()

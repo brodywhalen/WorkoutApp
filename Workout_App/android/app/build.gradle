@@ -89,7 +89,7 @@ android {
     namespace 'com.anonymous.raterepositoryapp'
     defaultConfig {
         applicationId 'com.anonymous.raterepositoryapp'
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 26
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"

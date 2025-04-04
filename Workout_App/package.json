@@ -16,7 +16,7 @@
     "immediate": "^3.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-native": "^0.76.8",
+    "react-native": "^0.76.9",
     "react-native-reanimated": "^3.16.1",
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "~0.19.13",

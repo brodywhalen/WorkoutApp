@@ -37,11 +37,14 @@ const RecordingPage = () =>{
     const [isRecording, setIsRecording] = useState(false)
 
     useEffect(()=> {
+        console.log('UseEffect 1')
         requestPermission()
     }, [requestPermission])
 
     useEffect(() => {
         // Set up the event listener to listen for hand landmarks detection results
+
+        console.log('UseEffect 1')
         const subscription = PoseLandmarksEmitter.addListener(
         'onPoseLandmarksDetected',
         event => {
@@ -68,9 +71,12 @@ const RecordingPage = () =>{
     }, []);
     console.log('before processor')
     // Camera Logic
-    const frameProcessor = useSkiaFrameProcessor(frame => {
+    const frameProcessor = useSkiaFrameProcessor((frame) => {
         'worklet';
         frame.render()
+
+        poseLandmarks2(frame)
+
         console.log('we skia here')
         if (landmarks.value[0]) {
             const hand = landmarks.value[0];
@@ -103,7 +109,7 @@ const RecordingPage = () =>{
 
 
     },[])
-    poseLandmarks2(frame)
+    
 
     const startRecord = async () => {
         if(cameraRef.current) {
